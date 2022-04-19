@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,7 +23,7 @@ public class JDBCTest {
      * Test method to check if update by statement is successful.
      */
     @Test
-    public void whenUpdatedUsingStatement_shouldReturnTrue() {
+    public void whenUpdatedUsingStatement_shouldReturnTrue() throws CustomException {
         statements.retrievePayroll();
         statements.updatePayroll();
 
@@ -33,7 +34,7 @@ public class JDBCTest {
      * Test method to check if update by prepared statement is successful.
      */
     @Test
-    public void whenUpdatedUsingPreparedStatement_shouldReturnTrue() {
+    public void whenUpdatedUsingPreparedStatement_shouldReturnTrue() throws CustomException, SQLException {
         statements.retrievePayroll();
         statements.updateByPreparedStatement();
 
@@ -43,7 +44,7 @@ public class JDBCTest {
      * Test method to check if update by prepared statement is successful.
      */
     @Test
-    public void whenRetrievedUsingStatement_shouldReturnTrue() {
+    public void whenRetrievedUsingStatement_shouldReturnTrue() throws SQLException, CustomException {
         statements.retrievePayroll();
         statements.retrieveEmployeeByStartDate("2022-01-01", "2022-03-02");
 

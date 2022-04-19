@@ -40,7 +40,7 @@ public class Statements {
      * Adding the employeePayroll object to payrollArrayList.
      * Printing the arrayList.
      */
-    public void retrievePayroll() {
+    public void retrievePayroll() throws CustomException {
 
         payrollArrayList = EmployeeDatabase.getEmployeeDB();
         Statement statement;
@@ -67,24 +67,20 @@ public class Statements {
      *
      * @return - boolean value for Test Cases. True when updated value matched.
      */
-    public boolean updatePayroll() {
+    public boolean updatePayroll() throws CustomException, SQLException {
 
         payrollArrayList = EmployeeDatabase.getEmployeeDB();
         Statement statement;
 
-        try {
-            statement = connection.createStatement();
-            statement.execute(UPDATE_QUERY);
-            for (EmployeePayroll employeePayroll : payrollArrayList) {
-                if (employeePayroll.getName().equals("Moinuddin")) {
-                    employeePayroll.setSalary(3000000);
-                    return true;
-                }
+        statement = connection.createStatement();
+        statement.execute(UPDATE_QUERY);
+        for (EmployeePayroll employeePayroll : payrollArrayList) {
+            if (employeePayroll.getName().equals("Moinuddin")) {
+                employeePayroll.setSalary(3000000);
+                return true;
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+
         return false;
     }
 
@@ -98,25 +94,21 @@ public class Statements {
      *
      * @return - boolean value for Test Cases. True when updated value matched.
      */
-    public boolean updateByPreparedStatement() {
+    public boolean updateByPreparedStatement() throws CustomException, SQLException {
 
         payrollArrayList = EmployeeDatabase.getEmployeeDB();
         PreparedStatement preparedStatement;
 
-        try {
-            preparedStatement = connection.prepareStatement(PREPARED_UPDATE_QUERY);
-            preparedStatement.setInt(1, 50000);
-            preparedStatement.setString(2, "Moinuddin");
-            preparedStatement.execute();
+        preparedStatement = connection.prepareStatement(PREPARED_UPDATE_QUERY);
+        preparedStatement.setInt(1, 50000);
+        preparedStatement.setString(2, "Moinuddin");
+        preparedStatement.execute();
 
-            for (EmployeePayroll employeePayroll : payrollArrayList) {
-                if (employeePayroll.getName().equals("Moinuddin")) {
-                    employeePayroll.setSalary(50000);
-                    return true;
-                }
+        for (EmployeePayroll employeePayroll : payrollArrayList) {
+            if (employeePayroll.getName().equals("Moinuddin")) {
+                employeePayroll.setSalary(50000);
+                return true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return false;
 
@@ -136,23 +128,19 @@ public class Statements {
      * @param date2
      * @return
      */
-    public boolean retrieveEmployeeByStartDate(String date1, String date2) {
+    public boolean retrieveEmployeeByStartDate(String date1, String date2) throws CustomException, SQLException {
 
         String query = String.format("SELECT * FROM employee_payroll where Start_Date between '%s' AND '%s';", date1, date2);
         payrollArrayList = EmployeeDatabase.getEmployeeDB();
         Statement statement;
-        try {
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
 
-            while (resultSet.next()) {
-                EmployeePayroll employeePayroll = new EmployeePayroll(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDouble(9), resultSet.getDouble(10), resultSet.getDouble(11), resultSet.getDouble(12), resultSet.getDouble(13));
-                payrollArrayList.add(employeePayroll);
-                System.out.println(employeePayroll);
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        while (resultSet.next()) {
+            EmployeePayroll employeePayroll = new EmployeePayroll(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDouble(9), resultSet.getDouble(10), resultSet.getDouble(11), resultSet.getDouble(12), resultSet.getDouble(13));
+            payrollArrayList.add(employeePayroll);
+            System.out.println(employeePayroll);
+            return true;
         }
         return false;
 
