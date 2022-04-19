@@ -6,25 +6,42 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Class containing methods to run specific statements.
+ *
+ * @author - Moinuddin.
+ */
 public class Statements {
+    /**
+     * query - String containing query ro run.
+     * connection - Instance of Connection Interface.
+     * payrollArrayList - ArrayList of EmployeePayroll Type.
+     */
     final static String query = "SELECT * from employee_payroll";
     Connection connection;
-    ArrayList<EmployeePayroll> db;
+    ArrayList<EmployeePayroll> payrollArrayList;
 
+    /**
+     * Constructor
+     *
+     * @param connection - connection object.
+     */
     public Statements(Connection connection) {
-        // TODO Auto-generated constructor stub
         this.connection = connection;
     }
 
     /**
      * Method to read the database and display in console.
-     * 1. We create a connection and then create a statement and store the result in ResultSet.
-     * We use while next to iterate through the database.
-     * We are also adding this to the ArrayList
+     * Initialized payrollArrayList using getEmployeeDB method from EmployeeDatabase Class.
+     * created a Statement object and initialized in try block using createStatement method - statement.
+     * Defined ResultSet object using executeQuery on statement.
+     * While resultSet.next has value. employeePayroll object will have all column values for each row.
+     * Adding the employeePayroll object to payrollArrayList.
+     * Printing the arrayList.
      */
-    public void read() {
+    public void retrievePayroll() {
 
-        db = EmployeeDatabase.getEmployeeDB();
+        payrollArrayList = EmployeeDatabase.getEmployeeDB();
         Statement statement;
 
         try {
@@ -33,7 +50,7 @@ public class Statements {
 
             while (resultSet.next()) {
                 EmployeePayroll employeePayroll = new EmployeePayroll(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDouble(9), resultSet.getDouble(10), resultSet.getDouble(11), resultSet.getDouble(12), resultSet.getDouble(13));
-                db.add(employeePayroll);
+                payrollArrayList.add(employeePayroll);
                 System.out.println(employeePayroll);
             }
         } catch (SQLException e) {

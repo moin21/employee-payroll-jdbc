@@ -1,17 +1,22 @@
 package com.bridgelabz;
 
-import java.sql.SQLException;
-
 /**
- * Class containing logic to establish mysql database connection.
+ * Class containing main method.
+ *
+ * @author - Moinuddin.
  */
 public class EmployeePayrollJDBCMain {
 
-
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    /**
+     * Main method.
+     * Created Configuration object - configuration.
+     * Created Statements object using configuration.establishConnection method(returns connection) - statements
+     * Calling retrievePayroll method for statements object. To print Table rows to console.
+     */
+    public static void main(String[] args) {
         Configuration configuration = new Configuration();
         Statements statements = new Statements(configuration.establishConnection());
-        statements.read();
+        statements.retrievePayroll();
 
     }
 }

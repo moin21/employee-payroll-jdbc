@@ -5,8 +5,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Configuration {
-    String url = "jdbc:mysql://localhost:3306/payroll_service";
+    /**
+     * Final static Strings defined for Database URL, userName and Password.
+     *
+     * @author - Moinuddin.
+     */
+    final static String URL = "jdbc:mysql://localhost:3306/payroll_service";
+    final static String USER_NAME = "root";
+    final static String PASSWORD = "alpha";
 
+    /**
+     * Method to establish connection to database.
+     * Using Class.forName to load Database Driver for mysql.(Try catch to handle {@link ClassNotFoundException})
+     * Created {@link Connection} object - connection.
+     * Assigning value to connection using getConnection method from DriverManager Class by passing URL, USER_NAME and PASSWORD as arguments.
+     * Try catch to handle run time exception interacting mySql Database.
+     *
+     * @return - connection object to be used while trying to run different Statements.
+     */
     public Connection establishConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -15,7 +31,7 @@ public class Configuration {
         }
         Connection connection;
         try {
-            connection = DriverManager.getConnection(url, "root", "alpha");
+            connection = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
