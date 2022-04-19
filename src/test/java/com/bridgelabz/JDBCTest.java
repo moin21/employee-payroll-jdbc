@@ -10,12 +10,12 @@ import static org.junit.Assert.assertEquals;
 public class JDBCTest {
     Connection connection;
     Configuration config;
-    Statements statement;
+    Statements statements;
 
     @Before
     public void initialization() {
         Configuration configuration = new Configuration();
-        Statements statements = new Statements(configuration.establishConnection());
+        statements = new Statements(configuration.establishConnection());
     }
 
     /**
@@ -23,10 +23,10 @@ public class JDBCTest {
      */
     @Test
     public void whenUpdatedUsingStatement_shouldReturnTrue() {
-        statement.retrievePayroll();
-        statement.updatePayroll();
+        statements.retrievePayroll();
+        statements.updatePayroll();
 
-        assertEquals(statement.updatePayroll(), true);
+        assertEquals(statements.updatePayroll(), true);
     }
 
     /**
@@ -34,9 +34,19 @@ public class JDBCTest {
      */
     @Test
     public void whenUpdatedUsingPreparedStatement_shouldReturnTrue() {
-        statement.retrievePayroll();
-        statement.updatePayroll();
+        statements.retrievePayroll();
+        statements.updateByPreparedStatement();
 
-        assertEquals(statement.updateByPreparedStatement(), true);
+        assertEquals(statements.updateByPreparedStatement(), true);
+    }
+    /**
+     * Test method to check if update by prepared statement is successful.
+     */
+    @Test
+    public void whenRetrievedUsingStatement_shouldReturnTrue() {
+        statements.retrievePayroll();
+        statements.retrieveEmployeeByStartDate("2022-01-01", "2022-03-02");
+
+        assertEquals(statements.retrieveEmployeeByStartDate("2022-01-01", "2022-03-02"), true);
     }
 }

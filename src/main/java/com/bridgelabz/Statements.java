@@ -17,7 +17,8 @@ public class Statements {
      */
     public final static String RETRIEVE_QUERY = "SELECT * from employee_payroll";
     public final static String UPDATE_QUERY = "UPDATE employee_payroll SET Salary = 3000000 WHERE name = 'Moinuddin'";
-    public final static String PREPARED_UPDATE_QUERY = "UPDATE employee_payroll SET Salary = ? WHERE name = ?";
+    public final static String PREPARED_UPDATE_QUERY = "UPDATE employee_payroll SET Salary = ? WHERE name = ?;";
+    public final static String PREPARED_RETRIEVE_QUERY = "SELECT Name, Start_Date FROM employee_payroll WHERE Start_Date Between CAST(? AS DATE) AND CAST(? AS DATE));";
     Connection connection;
     ArrayList<EmployeePayroll> payrollArrayList;
 
@@ -113,6 +114,42 @@ public class Statements {
                     employeePayroll.setSalary(50000);
                     return true;
                 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+    /**
+     * Method to read the database and display in console.
+     * Defined and Initialized String query to get rows with StartDate in specific date range.
+     * Initialized payrollArrayList using getEmployeeDB method from EmployeeDatabase Class.
+     * created a Statement object and initialized in try block using createStatement method - statement.
+     * Defined ResultSet object using executeQuery on statement.
+     * While resultSet.next has value. employeePayroll object will have all column values for each row.
+     * Adding the employeePayroll object to payrollArrayList.
+     * Printing the arrayList.
+     *
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public boolean retrieveEmployeeByStartDate(String date1, String date2) {
+
+        String query = String.format("SELECT * FROM employee_payroll where Start_Date between '%s' AND '%s';", date1, date2);
+        payrollArrayList = EmployeeDatabase.getEmployeeDB();
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                EmployeePayroll employeePayroll = new EmployeePayroll(resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getDouble(9), resultSet.getDouble(10), resultSet.getDouble(11), resultSet.getDouble(12), resultSet.getDouble(13));
+                payrollArrayList.add(employeePayroll);
+                System.out.println(employeePayroll);
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();

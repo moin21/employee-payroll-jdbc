@@ -20,5 +20,6 @@ public class EmployeePayrollJDBCMain {
         statements.retrievePayroll();
         statements.updatePayroll();
         statements.updateByPreparedStatement();
+        statements.retrieveEmployeeByStartDate("2022-01-01", "2022-03-02");
     }
 }
